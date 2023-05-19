@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "prettier --check . && eslint src --ext ts,tsx"
+    "prettier:check": "prettier --check .",
+    "prettier:fix": "prettier --write .",
+    "lint": "eslint src --ext ts,tsx"
   },
   "keywords": [],
   "author": "",
