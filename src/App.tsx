@@ -1,3 +1,5 @@
+import { Sidebar } from './components/sidebar';
+
 export const App = () => {
   return (
     <div className="flex h-[100vh] flex-col">
@@ -7,48 +9,7 @@ export const App = () => {
       </header>
 
       <main className="flex flex-1">
-        <aside className="h-full w-[300px] border-r-2 border-solid border-gray-800 pl-2">
-          <h1 className="inline-flex pb-2 pt-2 text-xl">Channel</h1>
-
-          <span className="relative right-2 flex h-[1px] w-[calc(100%+0.5rem)] bg-gray-300"></span>
-
-          <ul className="grid gap-1 pb-3 pt-3">
-            <li>Threads</li>
-            <li>Later</li>
-            <li>Direct messages</li>
-            <li>Mentions & reactions</li>
-            <li>Drafts & sent</li>
-            <li>Slack connect</li>
-            <li>Files</li>
-            <li>Apps</li>
-            <li>More</li>
-          </ul>
-
-          <span className="relative right-2 flex h-[1px] w-[calc(100%+0.5rem)] bg-gray-300"></span>
-
-          <nav className="pb-3 pt-3">
-            <details>
-              <summary className="pb-1 pt-1">Channels</summary>
-              <ul className="grid gap-1">
-                <li># general</li>
-                <li># random</li>
-                <li># memes</li>
-              </ul>
-            </details>
-          </nav>
-
-          <nav className="pb-3 pt-3">
-            <details>
-              <summary className="pb-1 pt-1">Direct messages</summary>
-              <ul className="grid gap-1">
-                <li>Slackbot</li>
-                <li>User 1</li>
-                <li>User 2</li>
-                <li>User 3</li>
-              </ul>
-            </details>
-          </nav>
-        </aside>
+        <Sidebar />
 
         <section className="flex flex-1 flex-col">
           <div className="relative flex items-center border-b-[1px] border-gray-300 p-2">

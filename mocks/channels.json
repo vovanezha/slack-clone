@@ -1,0 +1,27 @@
+[
+  {
+    "id": "1",
+    "name": "general",
+    "type": "public"
+  },
+  {
+    "id": "2",
+    "name": "random",
+    "type": "public"
+  },
+  {
+    "id": "3",
+    "name": "memes",
+    "type": "public"
+  },
+  {
+    "id": "4",
+    "name": "cat-haters",
+    "type": "private"
+  },
+  {
+    "id": "5",
+    "name": "good-boys",
+    "type": "private"
+  }
+]
