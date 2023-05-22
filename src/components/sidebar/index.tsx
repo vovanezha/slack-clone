@@ -1,7 +1,7 @@
 import { useAtom } from '@reatom/npm-react';
 import { getChannelsAction, getDirectsAction } from './model';
 import { ChannelItem } from '../../api/requests/channels';
-import { ReactNode } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 
 const ICON_BY_CHANNEL_TYPE: Record<ChannelItem['type'], ReactNode> = {
   private: (
@@ -53,6 +53,12 @@ const DirectsSkeleton = () => (
   </ul>
 );
 
+const LiItem = ({ className, children }: PropsWithChildren<{ className?: string }>) => (
+  <li className={`mr-2 cursor-pointer rounded pb-[0.15rem] pl-2 pt-[0.15rem] hover:bg-gray-200 ${className}`}>
+    {children}
+  </li>
+);
+
 export const Sidebar = () => {
   const [channels] = useAtom(getChannelsAction.dataAtom);
   const [channelsPending] = useAtom(getChannelsAction.pendingAtom);
@@ -61,35 +67,37 @@ export const Sidebar = () => {
 
   return (
     <aside className="h-full w-[300px] border-r-2 border-solid border-gray-800 pl-2">
-      <h1 className="inline-flex pb-2 pt-2 text-xl">Channel</h1>
+      <h1 className="mb-1 mt-1 inline-flex cursor-pointer rounded pb-1 pl-2 pr-2 pt-1 text-xl hover:bg-gray-200">
+        Workspace
+      </h1>
 
       <span className="relative right-2 flex h-[1px] w-[calc(100%+0.5rem)] bg-gray-300"></span>
 
-      <ul className="grid gap-1 pb-3 pt-3">
-        <li>Threads</li>
-        <li>Later</li>
-        <li>Direct messages</li>
-        <li>Mentions & reactions</li>
-        <li>Drafts & sent</li>
-        <li>Slack connect</li>
-        <li>Files</li>
-        <li>Apps</li>
-        <li>More</li>
+      <ul className="grid pb-3 pt-3">
+        <LiItem>Threads</LiItem>
+        <LiItem>Later</LiItem>
+        <LiItem>Direct messages</LiItem>
+        <LiItem>Mentions & reactions</LiItem>
+        <LiItem>Drafts & sent</LiItem>
+        <LiItem>Slack connect</LiItem>
+        <LiItem>Files</LiItem>
+        <LiItem>Apps</LiItem>
+        <LiItem>More</LiItem>
       </ul>
 
       <span className="relative right-2 flex h-[1px] w-[calc(100%+0.5rem)] bg-gray-300"></span>
 
       <nav className="pb-3 pt-3">
         <details open>
-          <summary className="pb-1 pl-1 pt-1">Channels</summary>
+          <summary className="cursor-default pb-1 pl-1 pt-1">Channels</summary>
           {channelsPending > 0 ? (
             <ChannelsSkeleton />
           ) : (
-            <ul className="grid gap-1">
+            <ul className="grid">
               {channels.map((item) => (
-                <li key={item.id} className="items-top grid grid-cols-[20px_auto] gap-1">
+                <LiItem key={item.id} className="items-top grid grid-cols-[20px_auto] gap-1">
                   {ICON_BY_CHANNEL_TYPE[item.type]} {item.name}
-                </li>
+                </LiItem>
               ))}
             </ul>
           )}
@@ -98,15 +106,15 @@ export const Sidebar = () => {
 
       <nav className="pb-3 pt-3">
         <details open>
-          <summary className="pb-1 pl-1 pt-1">Direct messages</summary>
+          <summary className="cursor-default pb-1 pl-1 pt-1">Direct messages</summary>
           {directsPending > 0 ? (
             <DirectsSkeleton />
           ) : (
-            <ul className="grid gap-1">
+            <ul className="grid">
               {directs.map((item) => (
-                <li key={item.id} className="grid grid-cols-[30px_auto] items-center gap-1">
+                <LiItem key={item.id} className="grid grid-cols-[30px_auto] items-center gap-1">
                   <img src={item.image} className="h-[30px] w-[30px] rounded object-cover" /> {item.name}
-                </li>
+                </LiItem>
               ))}
             </ul>
           )}
