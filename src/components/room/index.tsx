@@ -10,6 +10,8 @@ export const Room = () => {
   const [status] = useAtom(getChannelByIdAction.statusesAtom);
   const getChannelById = useAction(getChannelByIdAction);
 
+  // @TODO: make room proxy to handle channel and direct differently
+
   useEffect(() => {
     const id = location.pathname.at(-1);
 
