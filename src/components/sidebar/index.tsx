@@ -1,7 +1,10 @@
 import { useAtom } from '@reatom/npm-react';
+import { historyAtom } from '@reatom/npm-history';
 import { getChannelsAction, getDirectsAction } from './model';
 import { ChannelItem } from '../../api/requests/channels';
-import { PropsWithChildren, ReactNode } from 'react';
+import { PropsWithChildren, ReactNode, useMemo } from 'react';
+import { Link } from '../../router/Link';
+import { Routes } from '../../routes';
 
 const ICON_BY_CHANNEL_TYPE: Record<ChannelItem['type'], ReactNode> = {
   private: (
@@ -30,7 +33,7 @@ const ICON_BY_CHANNEL_TYPE: Record<ChannelItem['type'], ReactNode> = {
 const ChannelsSkeleton = () => (
   <ul className="grid gap-1">
     {Array.from({ length: 3 }).map((_, index) => (
-      <li key={index} className="items-top grid h-[24px] grid-cols-[20px_auto] items-center gap-1">
+      <li key={index} className="items-top grid h-[24px] grid-cols-[20px_auto] items-center gap-1 pr-2">
         <span className="inline-flex items-center justify-center">
           <span className="h-4 w-4 rounded bg-gray-300" />
         </span>
@@ -43,7 +46,7 @@ const ChannelsSkeleton = () => (
 const DirectsSkeleton = () => (
   <ul className="grid gap-1">
     {Array.from({ length: 3 }).map((_, index) => (
-      <li key={index} className="items-top grid h-[24px] grid-cols-[30px_auto] items-center gap-1">
+      <li key={index} className="items-top grid h-[24px] grid-cols-[30px_auto] items-center gap-1 pr-2">
         <span className="inline-flex items-center justify-center">
           <span className="h-6 w-6 rounded bg-gray-300" />
         </span>
@@ -53,17 +56,26 @@ const DirectsSkeleton = () => (
   </ul>
 );
 
-const LiItem = ({ className, children }: PropsWithChildren<{ className?: string }>) => (
-  <li className={`mr-2 cursor-pointer rounded pb-[0.15rem] pl-2 pt-[0.15rem] hover:bg-gray-200 ${className}`}>
+const LiItem = ({ className, active, children }: PropsWithChildren<{ className?: string; active?: boolean }>) => (
+  <li className={`mr-2 rounded pl-2 ${active ? 'bg-red-400' : 'hover:bg-gray-200'} ${className}`}>{children}</li>
+);
+
+const LinkItem = ({ children, href }: PropsWithChildren<{ href: string }>) => (
+  <Link className="inline-flex w-full pb-[0.15rem] pt-[0.15rem]" href={href}>
     {children}
-  </li>
+  </Link>
 );
 
 export const Sidebar = () => {
+  const [location] = useAtom(historyAtom.location);
   const [channels] = useAtom(getChannelsAction.dataAtom);
   const [channelsPending] = useAtom(getChannelsAction.pendingAtom);
   const [directs] = useAtom(getDirectsAction.dataAtom);
   const [directsPending] = useAtom(getDirectsAction.pendingAtom);
+
+  const currentItem = useMemo(() => {
+    return location.pathname.replace('/', '');
+  }, [location]);
 
   return (
     <aside className="h-full w-[300px] border-r-2 border-solid border-gray-800 pl-2">
@@ -74,14 +86,30 @@ export const Sidebar = () => {
       <span className="relative right-2 flex h-[1px] w-[calc(100%+0.5rem)] bg-gray-300"></span>
 
       <ul className="grid pb-3 pt-3">
-        <LiItem>Threads</LiItem>
-        <LiItem>Later</LiItem>
-        <LiItem>Direct messages</LiItem>
-        <LiItem>Mentions & reactions</LiItem>
-        <LiItem>Drafts & sent</LiItem>
-        <LiItem>Slack connect</LiItem>
-        <LiItem>Files</LiItem>
-        <LiItem>Apps</LiItem>
+        <LiItem active={currentItem === Routes.threads}>
+          <LinkItem href={'/' + Routes.threads}>Threads</LinkItem>
+        </LiItem>
+        <LiItem active={currentItem === Routes.later}>
+          <LinkItem href={'/' + Routes.later}>Later</LinkItem>
+        </LiItem>
+        <LiItem active={currentItem === Routes.direct}>
+          <LinkItem href={'/' + Routes.direct}>Direct messages</LinkItem>
+        </LiItem>
+        <LiItem active={currentItem === Routes.mentions}>
+          <LinkItem href={'/' + Routes.mentions}>Mentions & reactions</LinkItem>
+        </LiItem>
+        <LiItem active={currentItem === Routes.drafts}>
+          <LinkItem href={'/' + Routes.drafts}>Drafts & sent</LinkItem>
+        </LiItem>
+        <LiItem active={currentItem === Routes.connect}>
+          <LinkItem href={'/' + Routes.connect}>Slack connect</LinkItem>
+        </LiItem>
+        <LiItem active={currentItem === Routes.files}>
+          <LinkItem href={'/' + Routes.files}>Files</LinkItem>
+        </LiItem>
+        <LiItem active={currentItem === Routes.apps}>
+          <LinkItem href={'/' + Routes.apps}>Apps</LinkItem>
+        </LiItem>
         <LiItem>More</LiItem>
       </ul>
 
@@ -95,8 +123,13 @@ export const Sidebar = () => {
           ) : (
             <ul className="grid">
               {channels.map((item) => (
-                <LiItem key={item.id} className="items-top grid grid-cols-[20px_auto] gap-1">
-                  {ICON_BY_CHANNEL_TYPE[item.type]} {item.name}
+                <LiItem
+                  key={item.id}
+                  className="items-top grid grid-cols-[20px_auto] gap-1"
+                  active={currentItem === Routes.channels(item.id)}
+                >
+                  {ICON_BY_CHANNEL_TYPE[item.type]}{' '}
+                  <LinkItem href={'/' + Routes.channels(item.id)}>{item.name}</LinkItem>
                 </LiItem>
               ))}
             </ul>
@@ -112,8 +145,13 @@ export const Sidebar = () => {
           ) : (
             <ul className="grid">
               {directs.map((item) => (
-                <LiItem key={item.id} className="grid grid-cols-[30px_auto] items-center gap-1">
-                  <img src={item.image} className="h-[30px] w-[30px] rounded object-cover" /> {item.name}
+                <LiItem
+                  key={item.id}
+                  className="grid grid-cols-[25px_auto] items-center gap-1 pb-1 pt-1"
+                  active={currentItem === Routes.directs(item.id)}
+                >
+                  <img src={item.image} className="h-[25px] w-[25px] rounded object-cover" />{' '}
+                  <LinkItem href={'/' + Routes.directs(item.id)}>{item.name}</LinkItem>
                 </LiItem>
               ))}
             </ul>
