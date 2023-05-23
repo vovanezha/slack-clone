@@ -1,0 +1,26 @@
+{
+  "1": [
+    {
+      "id": "1",
+      "author": {
+        "id": "1",
+        "name": "Jack Russell Terrier",
+        "image": "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcS75_89ptKTW3Kz4AwQao8wMh8cOnw7nTJ9SON0o0emEqbBat_4OsBoue6QZ_KeM3Eq5HJifD3WYIt7f6M"
+      },
+      "body": "Hello colleagues! How are you today? We are announcing that we are replacing Redux with Reatom!"
+    },
+    {
+      "id": "2",
+      "author": {
+        "id": "3",
+        "name": "Golden Retriever",
+        "image": "https://www.hepper.com/wp-content/uploads/2021/11/golden-retriever_Shutterstock.jpg"
+      },
+      "body": "Wow, this is a great news! Welcome Reatom "
+    }
+  ],
+  "2": [],
+  "3": [],
+  "4": [],
+  "5": []
+}

@@ -1,9 +1,9 @@
 import { ffetch } from '../ffetch';
 
-export type DirectItem = {
+export type UserShort = {
   id: number;
   name: string;
   image: string;
 };
 
-export const getDirectsRequest = () => ffetch<DirectItem[]>('direct');
+export const getDirectsRequest = () => ffetch<UserShort[]>('direct');

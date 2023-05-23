@@ -10,8 +10,6 @@ export const RouterSwitch = ({ children }: PropsWithChildren) => {
     return <>{children}</>;
   }
 
-  console.log(Children.toArray(children));
-
   const matched = Children.toArray(children).find((c) => {
     if (!isValidElement(c)) {
       return false;
