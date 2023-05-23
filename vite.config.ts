@@ -10,7 +10,7 @@ export default defineConfig({
       targets: [
         {
           src: './mocks',
-          dest: 'public',
+          dest: '.',
         },
       ],
     }),
