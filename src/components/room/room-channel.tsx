@@ -8,13 +8,15 @@ type Props = {
   loading: boolean;
   messages: RoomMessage[];
   messagesLoading: boolean;
+  onSubmit: (body: string) => void;
 };
 
-export const RoomChannel = ({ channel, messages, loading, messagesLoading }: Props) => {
+export const RoomChannel = ({ channel, messages, loading, messagesLoading, onSubmit }: Props) => {
   return (
     <RoomContent
       messages={messages}
       messagesLoading={messagesLoading}
+      onSubmit={onSubmit}
       header={
         !loading && channel ? (
           <>

@@ -5,6 +5,7 @@ import { getChannelByIdAction, getChannelMessagesByIdAction, getDirectMessagesBy
 import { RoomChannel } from './room-channel';
 import { RoomDirect } from './room-direct';
 import { getDirectsAction } from '../sidebar/model';
+import { meAtom } from '../../models/me';
 
 export const Room = () => {
   const [location] = useAtom(historyAtom.location);
@@ -12,16 +13,44 @@ export const Room = () => {
   const type = location.pathname.startsWith('/channels') ? 'channels' : 'direct';
   const id = location.pathname.at(-1);
 
+  const [me] = useAtom(meAtom);
   const [channel] = useAtom(getChannelByIdAction.dataAtom);
   const [channelStatus] = useAtom(getChannelByIdAction.statusesAtom);
-  const [channelMessages] = useAtom(getChannelMessagesByIdAction.dataAtom);
+  const [channelMessages, updateChannelMessages] = useAtom(getChannelMessagesByIdAction.dataAtom);
   const [channelMessagesStatus] = useAtom(getChannelMessagesByIdAction.statusesAtom);
   const [direct] = useAtom((ctx) => ctx.spy(getDirectsAction.dataAtom).find((d) => d.id === id), [id]);
-  const [directMessages] = useAtom(getDirectMessagesByIdAction.dataAtom);
+  const [directMessages, updateDirectMessages] = useAtom(getDirectMessagesByIdAction.dataAtom);
   const [directMessagesStatus] = useAtom(getDirectMessagesByIdAction.statusesAtom);
   const getChannelById = useAction(getChannelByIdAction);
   const getChannelMessagesById = useAction(getChannelMessagesByIdAction);
   const getDirectMessagesById = useAction(getDirectMessagesByIdAction);
+
+  const handleSubmit = (body: string) => {
+    if (!me) {
+      return;
+    }
+
+    if (type === 'channels') {
+      updateChannelMessages([
+        ...channelMessages,
+        {
+          id: Math.random().toString(),
+          author: me,
+          body,
+        },
+      ]);
+    }
+    if (type === 'direct') {
+      updateDirectMessages([
+        ...directMessages,
+        {
+          id: Math.random().toString(),
+          author: me,
+          body,
+        },
+      ]);
+    }
+  };
 
   useEffect(() => {
     if (!id) {
@@ -44,6 +73,7 @@ export const Room = () => {
       messages={channelMessages}
       loading={channelStatus.isPending}
       messagesLoading={channelMessagesStatus.isPending}
+      onSubmit={handleSubmit}
     />
   ) : (
     <RoomDirect
@@ -51,6 +81,7 @@ export const Room = () => {
       messages={directMessages}
       loading={!direct}
       messagesLoading={directMessagesStatus.isPending}
+      onSubmit={handleSubmit}
     />
   );
 };
