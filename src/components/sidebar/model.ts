@@ -6,7 +6,7 @@ export const getChannelsAction = reatomAsync(getChannelsRequest, 'getChannelsAct
 onConnect(getChannelsAction.dataAtom, getChannelsAction);
 
 const SLACKBOT: UserShort = {
-  id: 0,
+  id: '0',
   name: 'Slackbot',
   image: 'https://a.slack-edge.com/80588/marketing/img/avatars/slackbot/avatar-slackbot.png',
 };

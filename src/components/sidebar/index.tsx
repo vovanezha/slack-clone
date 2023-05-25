@@ -5,6 +5,7 @@ import { PropsWithChildren, useMemo } from 'react';
 import { Link } from '../../router/Link';
 import { Routes } from '../../routes';
 import { ChannelTypeIcon } from '../channel-type-icon';
+import { UserAvatar } from '../user-avatar';
 
 const ChannelsSkeleton = () => (
   <ul className="grid gap-1">
@@ -123,10 +124,10 @@ export const Sidebar = () => {
               {directs.map((item) => (
                 <LiItem
                   key={item.id}
-                  className="grid grid-cols-[25px_auto] items-center gap-1 pb-1 pt-1"
+                  className="grid grid-cols-[28px_auto] items-center gap-1 pb-1 pt-1"
                   active={currentItem === Routes.directs(item.id)}
                 >
-                  <img src={item.image} className="h-[25px] w-[25px] rounded object-cover" />{' '}
+                  <UserAvatar src={item.image} size="s" />
                   <LinkItem href={'/' + Routes.directs(item.id)}>{item.name}</LinkItem>
                 </LiItem>
               ))}

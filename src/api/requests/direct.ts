@@ -1,7 +1,7 @@
 import { ffetch } from '../ffetch';
 
 export type UserShort = {
-  id: number;
+  id: string;
   name: string;
   image: string;
 };

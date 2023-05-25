@@ -7,4 +7,5 @@ export type Channel = ChannelShort & {
   usersPreview: UserShort[];
 };
 
-export const getChannelById = (id: string) => ffetch<Record<string, Channel>>('channels-by-id').then((res) => res[id]);
+export const getChannelByIdRequest = (id: string) =>
+  ffetch<Record<string, Channel>>('channels-by-id').then((res) => res[id]);
